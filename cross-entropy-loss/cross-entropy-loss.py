@@ -2,28 +2,34 @@ import numpy as np
 
 def cross_entropy_loss(y_true, y_pred):
     """
-    Compute average cross-entropy loss for multi-class classification.
-    
-    Parameters:
-        y_true : array-like of shape (N,)
-                 Correct class indices
-        y_pred : array-like of shape (N, K)
-                 Predicted probabilities (rows sum ≈ 1)
-                 
-    Returns:
-        float : average cross-entropy loss
+    y_true : list or array of labels (N,)
+    y_pred : list or array of probabilities (N, C)
     """
-    
-    # Convert to numpy arrays
+
+    # convert to numpy arrays (fixes your error)
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
-    
-    N = y_true.shape[0]
-    
-    # Select probabilities of correct classes
-    correct_class_probs = y_pred[np.arange(N), y_true]
-    
-    # Compute average negative log likelihood
-    loss = -np.mean(np.log(correct_class_probs))
-    
+
+    N = len(y_true)
+
+    # pick correct class probabilities
+    correct_probs = y_pred[np.arange(N), y_true]
+
+    # compute loss
+    loss = -np.mean(np.log(correct_probs))
+
     return loss
+
+
+# ---------------------------------------
+# Example
+# ---------------------------------------
+y_true = [0, 2, 1]
+
+y_pred = [
+    [0.7, 0.2, 0.1],
+    [0.1, 0.3, 0.6],
+    [0.2, 0.5, 0.3]
+]
+
+print("Cross-Entropy Loss:", cross_entropy_loss(y_true, y_pred))
